@@ -113,3 +113,10 @@ add this above "exit 0"
 
 If you not just want to stream locally you should change passwords.
 Therefor look at the beginning of index.php, line 39 of index.php and line 12 python3_wsserver.py.lock and maybe hash line 39 of index.php and line 12 python3_wsserver.py.lock.
+
+7. Copy Files 
+
+Copy all files to /var/www/
+Dont forget to change permisions of all files in /var/www/ to www-data:www-data 
+
+8. Reboot
