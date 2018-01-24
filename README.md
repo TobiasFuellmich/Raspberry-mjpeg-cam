@@ -1,4 +1,9 @@
 # Raspberry-mjpeg-cam
+
+This is a small website + websocket server for streaming jpegs from an Raspberry Pi + Camera.
+I wanted to control servos with it and therefor the latency had to be small (~500-1000ms).
+This also means great fluctuations can be problematic.
+
 # Installation
 
 1. install lighttpd
