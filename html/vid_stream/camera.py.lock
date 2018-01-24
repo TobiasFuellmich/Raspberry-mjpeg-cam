@@ -1,0 +1,46 @@
+# import the necessary packages
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import time
+from thread import start_new_thread
+from os import stat
+ 
+# initialize the camera and grab a reference to the raw camera capture
+camera = PiCamera()
+camera.resolution = (640, 480)
+camera.framerate = 34
+camera.rotation = 270
+ 
+# allow the camera to warmup
+time.sleep(1)
+ 
+# capture frames from the camera
+i=0
+start=time.time()
+def writeinfile(k,temp_t):
+	global start
+	info=str(k).zfill(3)
+	a=k-17
+	while a<k-1:
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%160).zfill(3)+".jpg"
+		size=stat(path).st_mtime
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a+1).zfill(3)+".jpg"
+		strt="%.4f" % (stat(path).st_mtime-size)
+		info+="/"+strt
+		a=a+1
+	file = open("/var/www/html/vid_stream/last_m_jpeg_info.lock","w")
+	file.write(info)
+	file.close()
+	start = temp_t
+
+while True:
+	camera.capture_sequence([
+        	'/var/www/html/vid_stream/vid_parts/frame%03d.jpg' % j
+        	for j in range(i,i+16)
+        	], format="jpeg", use_video_port=True, quality=10)
+	i=i+16
+	temp_t=time.time()
+	start_new_thread(writeinfile,(i,temp_t,))
+	if i>=160:
+		i=0
+
