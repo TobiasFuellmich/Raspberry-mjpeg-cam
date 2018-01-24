@@ -94,3 +94,17 @@ backend socket_backend
 -> Camera
 -> Yes
 ```
+
+5. edit /etc/rc.local
+
+```
+python3 /var/www/python3_wsserver.py.lock
+haproxy -f /etc/haproxy/haproxy.cfg
+```
+
+add this above "exit 0"
+
+6. add and change passwords
+
+If you not just want to stream locally you should change passwords.
+Therefor look at the beginning of index.php, line 39 of index.php and line 12 python3_wsserver.py.lock and maybe hash line 39 of index.php and line 12 python3_wsserver.py.lock.
