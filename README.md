@@ -36,6 +36,14 @@ compress.filetype           = ( "application/javascript", "text/css", "text/html
 include_shell "/usr/share/lighttpd/create-mime.assign.pl"
 include_shell "/usr/share/lighttpd/include-conf-enabled.pl"
 ```
+1.1. install php and php-cgi
+
+```
+sudo apt-get install php -y
+sudo apt-get install php-cgi -y
+sudo lighty-enable-mod fastcgi
+sudo lighty-enable-mod fastcgi-php
+```
 
 2. install HAProxy
 
