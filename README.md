@@ -116,7 +116,6 @@ Therefor look at the beginning of index.php, line 39 of index.php and line 12 py
 
 7. Copy Files 
 
-Copy all files to /var/www/
-Dont forget to change permisions of all files in /var/www/ to www-data:www-data 
+Copy all files to /var/www/ and dont forget to change permisions of all files in /var/www/ to www-data:www-data 
 
 8. Reboot
