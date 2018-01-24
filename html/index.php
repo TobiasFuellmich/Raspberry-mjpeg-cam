@@ -2,11 +2,11 @@
 /*$options = [
     'cost' => 11,
 ];
-echo password_hash("", PASSWORD_BCRYPT, $options);*/
-if(password_verify ( $_POST['pw'], '$2y$11$qIJ18JhwTFojIrwKKXv30e6khtIi4YYY0GUZqbKAfe6fZombAlabG')!=1){
+echo password_hash("", PASSWORD_BCRYPT, $options);
+if(password_verify ( $_POST['pw'], '')!=1){
 	readfile("password.html.lock");
 	exit;
-}
+}*/
 ?>
 <html>
 <head>

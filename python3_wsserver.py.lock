@@ -20,7 +20,7 @@ async def hello(websocket, path):
 					act_frame=int(info_split[0])
 					frame_data=b""
 					for i in range(int(info_split[0])-16,int(info_split[0])):
-						path ='/var/www/html/vid_stream/vid_parts/frame'+str(i).zfill(3)+".jpg"
+						path ='/var/www/html/vid_stream/vid_parts/frame'+str(i).zfill(3)+".jpg.lock"
 						size=stat(path).st_size
 						info+="/"+str(size).zfill(5)
 						files=open(path,"rb")

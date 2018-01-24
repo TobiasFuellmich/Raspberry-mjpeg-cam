@@ -22,9 +22,9 @@ def writeinfile(k,temp_t):
 	info=str(k).zfill(3)
 	a=k-17
 	while a<k-1:
-		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%160).zfill(3)+".jpg"
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%160).zfill(3)+".jpg.lock"
 		size=stat(path).st_mtime
-		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a+1).zfill(3)+".jpg"
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a+1).zfill(3)+".jpg.lock"
 		strt="%.4f" % (stat(path).st_mtime-size)
 		info+="/"+strt
 		a=a+1
@@ -35,7 +35,7 @@ def writeinfile(k,temp_t):
 
 while True:
 	camera.capture_sequence([
-        	'/var/www/html/vid_stream/vid_parts/frame%03d.jpg' % j
+        	'/var/www/html/vid_stream/vid_parts/frame%03d.jpg.lock' % j
         	for j in range(i,i+16)
         	], format="jpeg", use_video_port=True, quality=10)
 	i=i+16
