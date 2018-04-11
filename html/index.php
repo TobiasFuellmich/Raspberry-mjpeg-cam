@@ -24,7 +24,7 @@ var lastcom="";
 var imgsrc=new Array(160);
 var spf=new Array(160);//secondes per frame
 var frame=-1;
-var last_stored_frame=-1;
+var last_stored_frame=0;
 var vid_running=false;
 var vid_stopped=false;
 var connect;
@@ -63,22 +63,29 @@ function setconnect(){
 			}
 			var temp_ar=e.data;
 			if (temp_ar){
-				var info_sliced=new Uint8Array(temp_ar.slice(0,211));
+				var fetched_frames=0;
+				var info_sliced=new Uint8Array(temp_ar.slice(0,4));
 				var infostr="";
 				for (var j = 0; j < info_sliced.length; j++) {
 					infostr += String.fromCharCode(info_sliced[j]);
 				}
-				//console.log(infostr);console.log(temp_ar.byteLength);
+				fetched_frames=parseInt(infostr);
+				var info_sliced=new Uint8Array(temp_ar.slice(0,4+13*fetched_frames));
+				var infostr="";
+				for (var j = 0; j < info_sliced.length; j++) {
+					infostr += String.fromCharCode(info_sliced[j]);
+				}
+				//console.log(infostr+"ff: "+fetched_frames);//console.log(temp_ar.byteLength);
 				var info = infostr.split("/");
-				var strlen=info.slice(17,33);
-				var temp_ar=temp_ar.slice(211);
+				var strlen=info.slice(fetched_frames+1,fetched_frames*2+1);//gets all lengthes of images
+				var temp_ar=temp_ar.slice(4+13*fetched_frames);
 				var intlen=0,oldintlen=0;
-				var first_frame=parseInt(info[0])-16;
-				for(i=first_frame;i<first_frame+16;i++){
+				var first_frame=last_stored_frame;
+				for(i=first_frame;i<first_frame+fetched_frames;i++){
 					spf[i]=null;
 					spf[i]=info[i-first_frame+1]*1000;
 				}
-				for(var i=first_frame;i<first_frame+16;i++){
+				for(var i=first_frame;i<first_frame+fetched_frames;i++){
 					intlen=oldintlen+parseInt(strlen[i-first_frame]);
 					var ar = new Uint8Array(temp_ar.slice(oldintlen,intlen));
 					var raw = "";
@@ -93,9 +100,9 @@ function setconnect(){
 				temp_ar=null;
 				ar=null;
 				raw=null;
-				var frame_c=first_frame-16;
+				var frame_c=first_frame-fetched_frames;
 				if (frame_c<0){
-					frame_c=frame_c+160;
+					frame_c=frame_c+156;
 				}
 				if (frame<=frame_c){
 					console.log(frame+"->"+first_frame+" skipped:"+(first_frame-frame));
@@ -112,7 +119,7 @@ function setconnect(){
 					img.src=imgsrc[frame];
 					t=performance.now()+100;
 				}
-				last_stored_frame=parseInt(info[0]);
+				last_stored_frame=(first_frame+fetched_frames)%156;
 			}
 		}
 	};
@@ -125,11 +132,11 @@ if (window.XMLHttpRequest) {
 }
 xhttp.onreadystatechange = function() {
 	if (xhttp.readyState == 4 && xhttp.status == 200) {
-		//lädt
+		//lÃ¤dt
 	}
 	if (xhttp.readyState == 4) {
 		in_request=false;
-		//data=xhttp.responseText;
+		//alert(xhttp.responseText);
 	}
 };
 xhttp.ontimeout=function(){
@@ -140,8 +147,7 @@ function send_req(file,command){
 		in_request=true;
 		var rand=Math.round(100000*Math.random());
 		xhttp.open("POST", file, true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");;
-		xhttp.responseType = "arraybuffer";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.timeout=5000;
 		xhttp.send(command+"&rand="+rand);
 		lastfile=file;
@@ -174,7 +180,7 @@ function process_vid(){
 				while((t2 -t)>=spf[frame]){
 					t=t+spf[frame];
 					frame++;
-					if (frame==160){
+					if (frame==156){
 						frame=0;
 					}
 				}
