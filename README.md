@@ -91,10 +91,12 @@ backend socket_backend
 
 3. python modules
 
+```
 pip install picamera
 pip install numpy
 (apt-get install python3-pip)
 pip3 install websockets
+```
 
 4. activate Picamera
 
