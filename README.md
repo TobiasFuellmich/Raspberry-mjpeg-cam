@@ -89,7 +89,12 @@ backend socket_backend
     server apiserver 127.0.0.1:7216 weight 1 maxconn 4 check
 ```
 
-3. install python-picamera
+3. python modules
+
+pip install picamera
+pip install numpy
+(apt-get install python3-pip)
+pip install websockets
 
 4. activate Picamera
 
