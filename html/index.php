@@ -13,6 +13,7 @@ if(password_verify ( $_POST['pw'], '')!=1){
 <title>stream cam</title>
 <script>
 'use strict';
+var resolution=[960,540];
 var in_request=false;
 var xhttp;
 var data="";
@@ -102,7 +103,7 @@ function setconnect(){
 				raw=null;
 				var frame_c=first_frame-fetched_frames;
 				if (frame_c<0){
-					frame_c=frame_c+156;
+					frame_c=frame_c+180;
 				}
 				if (frame<=frame_c){
 					console.log(frame+"->"+first_frame+" skipped:"+(first_frame-frame));
@@ -119,7 +120,7 @@ function setconnect(){
 					img.src=imgsrc[frame];
 					t=performance.now()+100;
 				}
-				last_stored_frame=(first_frame+fetched_frames)%156;
+				last_stored_frame=(first_frame+fetched_frames)%180;
 			}
 		}
 	};
@@ -176,11 +177,11 @@ function process_vid(){
 					cam_status.isloading=false;
 				}
 				//document.getElementById("framec").innerHTML=frame;
-				ctx.drawImage(img, 0, 0);
+				ctx.drawImage(img, 0, 0, resolution[0], resolution[1]);
 				while((t2 -t)>=spf[frame]){
 					t=t+spf[frame];
 					frame++;
-					if (frame==156){
+					if (frame==180){
 						frame=0;
 					}
 				}
@@ -211,7 +212,22 @@ function setup(){
 	document.getElementById("status_symbol_play").style.display="block";
 	canvas = document.getElementById('camcanvas');
 	ctx = canvas.getContext('2d');
-	img = new Image(640,480);
+	resolution=[document.body.clientWidth,document.body.clientHeight];
+	var resx=document.body.clientWidth/960;
+	var resy=document.body.clientHeight/540;
+	if(resx<resy){
+		resolution=[resx*960,resx*540];
+	}else{
+		resolution=[resy*960,resy*540];
+	}
+	img = new Image(resolution[0],resolution[1]);
+	document.getElementById("cam").style.width=resolution[0]+"px";
+	document.getElementById("cam").style.height=resolution[1]+"px";
+	document.getElementById("cam").style.marginLeft=resolution[0]/-2;
+	document.getElementById("camcanvas").style.width=resolution[0];
+	document.getElementById("camcanvas").style.height=resolution[1];
+	ctx.canvas.width=resolution[0];
+	ctx.canvas.height=resolution[1];
 }
 var cam_status={
 	iscamoff:false,
@@ -302,10 +318,10 @@ function play_pause_stream(){
 	background:#333333;
 	position: absolute;
 	left: 50%;
-	top:70px;
-	margin-left: -350px;
-	width: 640px;
-	height: 480px;
+	top:0px;
+	margin-left: -480px;
+	width: 960px;
+	height: 540px;
 }
 #cam_status_symbols{
 	position:absolute;
@@ -329,7 +345,7 @@ function play_pause_stream(){
 	top:70px;
 	margin-left: 300px;
 	width: 190px;
-	height: 280px;
+	height: 80px;
 	color:#eeeeee;
 	text-align:center;
 }
@@ -357,20 +373,14 @@ function play_pause_stream(){
 .cam_move_b{
 	position:absolute;
 }
+body{
+	background:#222222;
+}
 </style>
 </head>
 <body onload="setup();">
-<!--here was a header-->
-	<div id="cam_filter">
-		<div class="cam_filter_b" id="framec"></div>
-		<div class="cam_filter_b"></div>
-		<div class="cam_filter_b"></div>
-		<div class="cam_filter_b"></div>
-		<div class="cam_filter_b"></div>
-		<div class="cam_filter_b"></div>
-	</div>
 	<div id="cam" onclick="play_pause_stream();">
-		<canvas style="" id="camcanvas" width="640" height="480"></canvas>
+		<canvas style="" id="camcanvas" width="960" height="540"></canvas>
 		<div id="cam_status_symbols">
 			<svg width="100" height="100" id="status_symbol_pause">
 				<circle cx="50" cy="50" r="47" fill="#c55151" stroke-width="3px" stroke="#eeeeee"/>
@@ -423,7 +433,7 @@ function play_pause_stream(){
 	<div class="cam_any_control" onclick="start_vid();">Starte Kamera</div>
 	<div class="cam_any_control" onclick="stop_vid();">Stoppe Kamera</div>
 	</div>
-	<div id="cam_move">
+	<!---div id="cam_move">
 		<svg width="50" height="50" class="cam_move_b" style="left:70px;top:10px;transform:rotate(0deg)">
 			<path d="M25 50 l0 -50 l-25 50 Z" style="fill:#222222;" />
 			<path d="M25 50 l0 -50 l25 50 Z" style="fill:#444444;" />
@@ -440,7 +450,7 @@ function play_pause_stream(){
 			<path d="M25 50 l0 -50 l-25 50 Z" style="fill:#222222;" />
 			<path d="M25 50 l0 -50 l25 50 Z" style="fill:#444444;" />
 		</svg>
-	</div>
+	</div--->
 </body>
 </html>
 
