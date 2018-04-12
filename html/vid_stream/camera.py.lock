@@ -1,5 +1,4 @@
 # import the necessary packages
-from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
 from thread import start_new_thread
@@ -7,7 +6,7 @@ from os import stat
  
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (640, 480)
+camera.resolution = (640, 360)
 camera.framerate = 24
 camera.rotation = 180
 # camera.image_effect='watercolor'
@@ -16,32 +15,43 @@ camera.rotation = 180
 time.sleep(1)
  
 # capture frames from the camera
-i=0
-start=time.time()
-def writeinfile(k,temp_t):
-	global start
+def writeinfile(k):
 	info=str(k).zfill(4)
 	a=k-13
 	while a<k-1:
-		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%156).zfill(3)+".jpg"
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%180).zfill(3)+".jpg"
 		st_time=stat(path).st_mtime
-		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a+1).zfill(3)+".jpg"
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str((a+1)).zfill(3)+".jpg"
 		strt="%.4f" % (stat(path).st_mtime-st_time)
 		info+="/"+strt
 		a=a+1
 	file = open("/var/www/html/vid_stream/last_m_jpeg_info.lock","w")
 	file.write(info)
 	file.close()
-	start = temp_t
+
+def positioncheck():
+	i=12
+	path ='/var/www/html/vid_stream/vid_parts/frame'+str(i).zfill(3)+".jpg"
+	st_time=stat(path).st_mtime
+	while True:
+		path ='/var/www/html/vid_stream/vid_parts/frame'+str(i%180).zfill(3)+".jpg"
+		if st_time != stat(path).st_mtime:
+			start_new_thread(writeinfile,(i,))
+			if i>=180:
+				i=0
+			i=i+12
+			path ='/var/www/html/vid_stream/vid_parts/frame'+str(i%180).zfill(3)+".jpg"
+			st_time=stat(path).st_mtime
+		time.sleep(0.1)
+
+start_new_thread(positioncheck,())
+def ka():
+	n=0;
+	while n<5000:#number of loops creates lagg after loops -> the higher the less laggs 
+		for j in range(0,180):
+			yield '/var/www/html/vid_stream/vid_parts/frame%03d.jpg' % j
+		n=n+1
 
 while True:
-	camera.capture_sequence([
-        	'/var/www/html/vid_stream/vid_parts/frame%03d.jpg' % j
-        	for j in range(i,i+12)
-        	], format="jpeg", use_video_port=True, quality=4)
-	i=i+12
-	temp_t=time.time()
-	start_new_thread(writeinfile,(i,temp_t,))
-	if i>=156:
-		i=0
+	camera.capture_sequence(ka(), format="jpeg", use_video_port=True, quality=20)
 
