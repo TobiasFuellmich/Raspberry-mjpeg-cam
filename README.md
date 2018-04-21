@@ -117,13 +117,20 @@ haproxy -f /etc/haproxy/haproxy.cfg
 
 add this above "exit 0"
 
-6. add and change passwords
+6. Add www-data to video and gpio group
 
-If you not just want to stream locally you should change passwords.
-Therefor look at the beginning of html/index.php, line 39 of html/index.php and line 12 python3_wsserver.py.lock and maybe hash line 39 of html/index.php and line 12 python3_wsserver.py.lock.
+```
+sudo gpasswd -a www-data gpio
+sudo gpasswd -a www-data video
+```
 
 7. Copy Files 
 
 Copy all files to /var/www/ and dont forget to change permisions of all files in /var/www/ to www-data:www-data 
 
-8. Reboot
+8. add and change passwords
+
+If you not just want to stream locally you should change passwords.
+Therefor look at the beginning of html/index.php, line 39 of html/index.php and line 12 python3_wsserver.py.lock and maybe hash line 39 of html/index.php and line 12 python3_wsserver.py.lock.
+
+9. Reboot
