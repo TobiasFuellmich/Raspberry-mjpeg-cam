@@ -95,6 +95,7 @@ backend socket_backend
 apt-get install python-picamera
 (apt-get install python3-pip)
 pip3 install websockets
+(apt-get install python-pip)
 pip install numpy
 ```
 
