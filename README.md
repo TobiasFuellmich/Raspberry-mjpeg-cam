@@ -133,12 +133,14 @@ Copy all files to /var/www/ and dont forget to change permisions of all files in
 If you not just want to stream locally you should change passwords.
 
 In /html/index.php:
--remove "/*" and "*/",
+-remove "/&#42;" and "&#42;/"
+
 -replace [PW] with your password in:
 ```
 echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
 ```
 -open the main page
+
 -replace [hash] with the hash you got in:
 ```
 $options = [
@@ -154,5 +156,4 @@ if(password_verify ( $_POST['pw'], '[hash]')!=1){
 ```
 echo password_hash("", PASSWORD_BCRYPT, $options);
 ```
-
 9. Reboot
