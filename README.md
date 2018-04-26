@@ -143,7 +143,7 @@ echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
 
 -replace [hash] with the hash you got in:
 ```
-$pwhash="[hash]";
+$pwhash='[hash]';
 $options = [
     'cost' => 11,
 ];
