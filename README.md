@@ -131,6 +131,7 @@ Copy all files to /var/www/ and dont forget to change permisions of all files in
 8. add and change passwords
 
 If you not just want to stream locally you should change passwords.
+
 In /html/index.php:
 -remove "/*" and "*/",
 -replace [PW] with your password in:
