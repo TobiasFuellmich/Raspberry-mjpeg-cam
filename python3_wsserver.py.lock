@@ -10,7 +10,7 @@ async def hello(websocket, path):
 	running=True
 	last_time=0
 	send_frames=12
-	if(pw == "fgsdgdgh+456zh54tgh6!2dde#"):
+	if(pw == ""):
 		while True:
 			path ="/var/www/html/vid_stream/last_m_jpeg_info.lock"
 			mtime=stat(path).st_mtime
