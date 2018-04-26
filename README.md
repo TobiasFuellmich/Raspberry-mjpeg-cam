@@ -166,5 +166,11 @@ if($_POST['pw']!=="[hash]"){
 	exit;
 }
 ```
+In python3_wsserver.py.lock:
+
+-replace [hash] with the hash you got in (line 13):
+```
+	if(pw == "[hash]"):
+```
 
 9. Reboot
