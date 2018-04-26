@@ -131,12 +131,15 @@ Copy all files to /var/www/ and dont forget to change permisions of all files in
 8. add and change passwords
 
 If you not just want to stream locally you should change passwords.
-Therefor you need to remove "/*" and "*/",
-replace [PW] with your password in
+In /html/index.php:
+-remove "/*" and "*/",
+-replace [PW] with your password in:
+```
 echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
-open the main page
-replace [hash] with the hash you got in:
-'''
+```
+-open the main page
+-replace [hash] with the hash you got in:
+```
 $options = [
     'cost' => 10,
 ];
@@ -145,10 +148,10 @@ if(password_verify ( $_POST['pw'], '[hash]')!=1){
 	readfile("password.html.lock");
 	exit;
 }
-'''
-remove 
-'''
+```
+-remove 
+```
 echo password_hash("", PASSWORD_BCRYPT, $options);
-'''
+```
 
 9. Reboot
