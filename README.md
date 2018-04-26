@@ -173,4 +173,6 @@ In python3_wsserver.py.lock:
 	if(pw == "[hash]"):
 ```
 
+! Beware dont use it on a public networks since it is not ssl encripted.
+
 9. Reboot
