@@ -156,4 +156,14 @@ if(password_verify ( $_POST['pw'], '[hash]')!=1){
 ```
 echo password_hash("", PASSWORD_BCRYPT, $options);
 ```
+
+In /html/stepper/cam_step.php, /html/stepper/stepper_move.php, /html/vid_stream/m_jpeg_data_collector.php:
+
+-replace [hash] with the hash you got in:
+```
+if($_POST['pw']!==""){
+	exit;
+}
+```
+
 9. Reboot
