@@ -8,7 +8,7 @@ from os import stat
 camera = PiCamera()
 camera.resolution = (640, 360)
 camera.framerate = 24
-camera.rotation = 180
+camera.rotation = 0
 # camera.image_effect='watercolor'
  
 # allow the camera to warmup
@@ -17,7 +17,7 @@ time.sleep(1)
 # capture frames from the camera
 def writeinfile(k):
 	info=str(k).zfill(4)
-	a=k-13
+	a=k-3
 	while a<k-1:
 		path ='/var/www/html/vid_stream/vid_parts/frame'+str(a%180).zfill(3)+".jpg"
 		st_time=stat(path).st_mtime
@@ -30,7 +30,7 @@ def writeinfile(k):
 	file.close()
 
 def positioncheck():
-	i=12
+	i=2
 	path ='/var/www/html/vid_stream/vid_parts/frame'+str(i).zfill(3)+".jpg"
 	st_time=stat(path).st_mtime
 	while True:
@@ -39,10 +39,10 @@ def positioncheck():
 			start_new_thread(writeinfile,(i,))
 			if i>=180:
 				i=0
-			i=i+12
+			i=i+2
 			path ='/var/www/html/vid_stream/vid_parts/frame'+str(i%180).zfill(3)+".jpg"
 			st_time=stat(path).st_mtime
-		time.sleep(0.1)
+		time.sleep(0.001)
 
 start_new_thread(positioncheck,())
 def ka():
@@ -53,5 +53,5 @@ def ka():
 		n=n+1
 
 while True:
-	camera.capture_sequence(ka(), format="jpeg", use_video_port=True, quality=20)
+	camera.capture_sequence(ka(), format="jpeg", use_video_port=True, quality=5)
 

@@ -1,0 +1,83 @@
+import RPi.GPIO as GPIO
+import time
+import sys
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
+GPIO.setup(16, GPIO.OUT)
+GPIO.setup(17, GPIO.OUT)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
+GPIO.setup(16, GPIO.OUT)
+GPIO.setup(17, GPIO.OUT)
+
+def stepps(s,in1,in2,in3,in4):
+	if s==1:
+		GPIO.output(in1, 0)
+		GPIO.output(in2, 0)
+		GPIO.output(in3, 0)
+		GPIO.output(in4, 1)
+	elif s==2:
+		GPIO.output(in1, 0)
+		GPIO.output(in2, 0)
+		GPIO.output(in3, 1)
+		GPIO.output(in4, 1)
+	elif s==3:
+		GPIO.output(in1, 0)
+		GPIO.output(in2, 0)
+		GPIO.output(in3, 1)
+		GPIO.output(in4, 0)
+	elif s==4:
+		GPIO.output(in1, 0)
+		GPIO.output(in2, 1)
+		GPIO.output(in3, 1)
+		GPIO.output(in4, 0)
+	elif s==5:
+		GPIO.output(in1, 0)
+		GPIO.output(in2, 1)
+		GPIO.output(in3, 0)
+		GPIO.output(in4, 0)
+	elif s==6:
+		GPIO.output(in1, 1)
+		GPIO.output(in2, 1)
+		GPIO.output(in3, 0)
+		GPIO.output(in4, 0)
+	elif s==7:
+		GPIO.output(in1, 1)
+		GPIO.output(in2, 0)
+		GPIO.output(in3, 0)
+		GPIO.output(in4, 0)
+	elif s==8:
+		GPIO.output(in1, 1)
+		GPIO.output(in2, 0)
+		GPIO.output(in3, 0)
+		GPIO.output(in4, 1)
+	
+
+dir=int(sys.argv[1])
+file = open("/var/www/html/stepper/cam_step_pos.lock", "r")
+pos=int(file.read())
+file.close()
+if (pos>=1 or dir==1) and (dir==2 or pos<=4):
+	for n in range(1,129):
+		i=n*2
+		print(i%8)
+		if dir==1:
+			stepps(i%8+2,12,13,16,17)
+		elif dir==2:
+			stepps(((i%8-8)*-1)-1,12,13,16,17)
+		
+		time.sleep(0.005)
+	
+	if dir==1:
+		pos=pos+1
+	if dir==2:
+		pos=pos-1
+	file = open("/var/www/html/stepper/cam_step_pos.lock", "w")
+	file.write(str(pos))
+	file.close()
+
