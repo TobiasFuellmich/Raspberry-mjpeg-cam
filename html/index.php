@@ -1,5 +1,5 @@
 <?php
-$pwhash="";
+$pwhash='';
 /*$options = [
     'cost' => 11,
 ];
