@@ -1,12 +1,13 @@
 <?php
-/*$options = [
+$options = [
     'cost' => 11,
 ];
 echo password_hash("", PASSWORD_BCRYPT, $options);
-if(password_verify ( $_POST['pw'], '')!=1){
+pwhash="";
+if(password_verify ( $_POST['pw'], pwhash)!=1){
 	readfile("password.html.lock");
 	exit;
-}*/
+}
 ?>
 <html>
 <head>
@@ -39,7 +40,7 @@ function setconnect(){
 	connect=new WebSocket('ws://'+href);
 	connect.binaryType="arraybuffer";
 	connect.onopen=function (){
-		connect.send("fgsdgdgh+456zh54tgh6!2dde#");
+		connect.send("<?php echo pwhash ?>")
 	};
 	connect.onclose=function(){
 		console.log('Server closed WebSocket!');
@@ -155,7 +156,7 @@ function send_req(file,command,ismute){
 		xhttp.open("POST", file, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.timeout=2000;
-		xhttp.send(command+"&rand="+rand);
+		xhttp.send(command+"&pw=<?php echo pwhash ?>&rand="+rand);
 		lastfile=file;
 		lastcom=command;
 		return true;
@@ -812,4 +813,3 @@ body{
 </div>
 </body>
 </html>
-
