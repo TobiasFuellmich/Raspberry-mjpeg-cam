@@ -1,4 +1,11 @@
 <?php
+/*$options = [
+    'cost' => 11,
+];
+echo password_hash("", PASSWORD_BCRYPT, $options);
+if(password_verify ( $_POST['pw'], '')!=1){
+	exit;
+}*/
 // ss init|cancel|start init and cancel start and cancel script, start gives move command
 if($_POST['ss']==="init"){
 	$lines=shell_exec('ps -ef | grep -c "/var/www/html/stepper/step.py.lock"');
