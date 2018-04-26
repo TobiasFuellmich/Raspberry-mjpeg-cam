@@ -144,10 +144,11 @@ echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
 -replace [hash] with the hash you got in:
 ```
 $options = [
-    'cost' => 10,
+    'cost' => 11,
 ];
 echo password_hash("", PASSWORD_BCRYPT, $options);
-if(password_verify ( $_POST['pw'], '[hash]')!=1){
+pwhash="[hash]";
+if(password_verify ( $_POST['pw'], pwhash)!=1){
 	readfile("password.html.lock");
 	exit;
 }
@@ -161,7 +162,7 @@ In /html/stepper/cam_step.php, /html/stepper/stepper_move.php, /html/vid_stream/
 
 -replace [hash] with the hash you got in:
 ```
-if($_POST['pw']!==""){
+if($_POST['pw']!=="[hash]"){
 	exit;
 }
 ```
