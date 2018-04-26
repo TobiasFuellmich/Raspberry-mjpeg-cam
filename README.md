@@ -143,12 +143,12 @@ echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
 
 -replace [hash] with the hash you got in:
 ```
+$pwhash="";
 $options = [
     'cost' => 11,
 ];
 echo password_hash("", PASSWORD_BCRYPT, $options);
-pwhash="[hash]";
-if(password_verify ( $_POST['pw'], pwhash)!=1){
+if(password_verify ( $_POST['pw'], $pwhash)!=1){
 	readfile("password.html.lock");
 	exit;
 }
