@@ -131,6 +131,24 @@ Copy all files to /var/www/ and dont forget to change permisions of all files in
 8. add and change passwords
 
 If you not just want to stream locally you should change passwords.
-Therefor look at the beginning of html/index.php, line 39 of html/index.php and line 12 python3_wsserver.py.lock and maybe hash line 39 of html/index.php and line 12 python3_wsserver.py.lock.
+Therefor you need to remove "/*" and "*/",
+replace [PW] with your password in
+echo password_hash("[PW]", PASSWORD_BCRYPT, $options);
+open the main page
+replace [hash] with the hash you got in:
+'''
+$options = [
+    'cost' => 10,
+];
+echo password_hash("", PASSWORD_BCRYPT, $options);
+if(password_verify ( $_POST['pw'], '[hash]')!=1){
+	readfile("password.html.lock");
+	exit;
+}
+'''
+remove 
+'''
+echo password_hash("", PASSWORD_BCRYPT, $options);
+'''
 
 9. Reboot
