@@ -1,5 +1,5 @@
 <?php
-if($_POST['pw']!=='$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni'){
+if($_POST['pw']!==''){
 	exit;
 }
 // ss init|cancel|start init and cancel start and cancel script, start gives move command
