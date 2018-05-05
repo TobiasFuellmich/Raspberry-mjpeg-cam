@@ -1,5 +1,5 @@
 <?php
-$pwhash='$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni';
+$pwhash='';
 $options = [
     'cost' => 11,
 ];
