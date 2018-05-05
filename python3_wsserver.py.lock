@@ -9,8 +9,8 @@ async def hello(websocket, path):
 	pw = await websocket.recv()
 	running=True
 	last_time=0
-	send_frames=12
-	if(pw == ""):
+	send_frames=2
+	if(pw == '$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni'):
 		while True:
 			path ="/var/www/html/vid_stream/last_m_jpeg_info.lock"
 			mtime=stat(path).st_mtime
@@ -18,12 +18,12 @@ async def hello(websocket, path):
 				files=open("/var/www/html/vid_stream/last_m_jpeg_info.lock")
 				info=files.read()# frame number/time used for frames
 				files.close
-				if (len(info)==88):
+				if (len(info)==send_frames*7+4):
 					last_time=mtime
 					info_split= info.split("/")
 					info=str(send_frames).zfill(4)+info[4:]
 					frame_data=b""
-					for i in range(int(info_split[0])-12,int(info_split[0])):
+					for i in range(int(info_split[0])-send_frames,int(info_split[0])):
 						path ='/var/www/html/vid_stream/vid_parts/frame'+str(i).zfill(3)+".jpg"
 						size=stat(path).st_size
 						info+="/"+str(size).zfill(5)
@@ -31,7 +31,7 @@ async def hello(websocket, path):
 						frame_data+=files.read()
 						files.close()
 			try:
-				if(len(info)<120):
+				if(len(info)<send_frames*7+8):
 					await websocket.send("no data")
 					print("no data")
 				else:
@@ -42,7 +42,7 @@ async def hello(websocket, path):
 				break
 			
 			info=""
-			sleep(0.05)
+			sleep(0.001)
 		print("<> closed")
 
 start_server = websockets.serve(hello, '127.0.0.1', 7216, timeout=10)
