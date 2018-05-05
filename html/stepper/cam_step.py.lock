@@ -2,13 +2,6 @@ import RPi.GPIO as GPIO
 import time
 import sys
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(12, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(16, GPIO.OUT)
-GPIO.setup(17, GPIO.OUT)
-GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(12, GPIO.OUT)
 GPIO.setup(13, GPIO.OUT)
@@ -65,9 +58,9 @@ file.close()
 if (pos>=1 or dir==1) and (dir==2 or pos<=4):
 	for n in range(1,129):
 		i=n*2
-		print(i%8)
+		print(i%8+1)
 		if dir==1:
-			stepps(i%8+2,12,13,16,17)
+			stepps(i%8+1,12,13,16,17)
 		elif dir==2:
 			stepps(((i%8-8)*-1)-1,12,13,16,17)
 		
@@ -81,3 +74,4 @@ if (pos>=1 or dir==1) and (dir==2 or pos<=4):
 	file.write(str(pos))
 	file.close()
 
+GPIO.cleanup()

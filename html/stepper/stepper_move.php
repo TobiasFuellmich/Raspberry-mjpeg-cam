@@ -1,9 +1,7 @@
 <?php
-/*
-if($_POST['pw']!==""){
+if($_POST['pw']!=='$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni'){
 	exit;
 }
-*/
 // ss init|cancel|start init and cancel start and cancel script, start gives move command
 if($_POST['ss']==="init"){
 	$lines=shell_exec('ps -ef | grep -c "/var/www/html/stepper/step.py.lock"');
@@ -12,7 +10,7 @@ if($_POST['ss']==="init"){
 	}
 }else{
 	if($_POST['ss']==="cancel"){
-		shell_exec('pkill -f /var/www/html/stepper/step.py.lock');
+		shell_exec('nohup python /var/www/html/stepper/stop_step_move.py.lock > /dev/null 2>/dev/null &');
 	}else{
 		if($_POST['ss']==="start"){
 			if($_POST['dir']==="forward" or $_POST['dir']==="left" or $_POST['dir']==="right" or $_POST['dir']==="stop"

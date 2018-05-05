@@ -2,17 +2,6 @@ import RPi.GPIO as GPIO
 import time
 from os import stat
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(19, GPIO.OUT)
-GPIO.setup(20, GPIO.OUT)
-GPIO.setup(22, GPIO.OUT)
-GPIO.setup(23, GPIO.OUT)
-GPIO.setup(24, GPIO.OUT)
-GPIO.setup(25, GPIO.OUT)
-GPIO.setup(26, GPIO.OUT)
-GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 GPIO.setup(19, GPIO.OUT)
@@ -65,7 +54,7 @@ def stepps(s,in1,in2,in3,in4):
 		GPIO.output(in3, 0)
 		GPIO.output(in4, 1)
 	
-i=1
+i=0
 timeout=0
 dir="stop"
 file = open("/var/www/html/stepper/step_keep.lock", "w")
@@ -76,22 +65,22 @@ st_time=stat(path).st_mtime
 while True:
 	if dir!="stop":
 		if dir=="forward":
-			stepps(i%8,22,20,19,18)
-			stepps(i%8,23,24,25,26)
+			stepps(i%8+1,22,20,19,18)
+			stepps(i%8+1,23,24,25,26)
 		elif dir=="left":
-			stepps(((i%8-8)*-1)+1,23,24,25,26)
-			stepps(i%8,22,20,19,18)
+			stepps(((i%8-8)*-1)-1,23,24,25,26)
+			stepps(i%8+1,22,20,19,18)
 		elif dir=="right":
-			stepps(i%8,23,24,25,26)
-			stepps(((i%8-8)*-1)+1,22,20,19,18)
+			stepps(i%8+1,23,24,25,26)
+			stepps(((i%8-8)*-1)-1,22,20,19,18)
 		elif dir=="backward":
-			stepps(((i%8-8)*-1)+1,23,24,25,26)
-			stepps(((i%8-8)*-1)+1,22,20,19,18)
+			stepps(((i%8-8)*-1)-1,23,24,25,26)
+			stepps(((i%8-8)*-1)-1,22,20,19,18)
 	
-	time.sleep(0.003)
-	i=i+2
-	if i>=129:
-		i=1
+	time.sleep(0.001)
+	i=i+1
+	if i>=127:
+		i=0
 		file = open("/var/www/html/stepper/step_keep.lock", "r")
 		n_dir=str(file.read())
 		file.close()
@@ -100,13 +89,12 @@ while True:
 			timeout=0
 		else:
 			n_st_time=stat(path).st_mtime
-			print(n_st_time)
 			if st_time!=n_st_time:
 				st_time=n_st_time
 				timeout=0
 			else:
 				timeout=timeout+1
-				if timeout>=14:
+				if timeout>=28:
 					dir="stop"
 
 
