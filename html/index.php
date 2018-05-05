@@ -1,13 +1,13 @@
 <?php
-$pwhash='';
-/*$options = [
+$pwhash='$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni';
+$options = [
     'cost' => 11,
 ];
-echo password_hash("", PASSWORD_BCRYPT, $options);
+//echo password_hash("", PASSWORD_BCRYPT, $options);
 if(password_verify ( $_POST['pw'], $pwhash)!=1){
 	readfile("password.html.lock");
 	exit;
-}*/
+}
 ?>
 <html>
 <head>
@@ -731,7 +731,7 @@ body{
 						<path d="M30 95 L5 95 L5 70" stroke-width="5px" stroke="#eeeeee" fill="none"/>
 					</svg>
 				</div>
-				<div class="cam_stepper_b" onclick="move_cam('up')" style="bottom:60%">
+				<div class="cam_stepper_b" onclick="move_cam('down')" style="bottom:60%">
 					<svg viewbox="0 0 50 50">
 						<circle cx="25" cy="25" r="25" fill="#354a5f"/>
 						<path d="M10 40 l15 -30 l15 30 Z" style="fill:#000000;" />
@@ -739,7 +739,7 @@ body{
 					</svg>
 					<div style="position:absolute;width:100%;height:100%;"></div>
 				</div>
-				<div class="cam_stepper_b" onclick="move_cam('down')" style="transform:rotate(180deg)">
+				<div class="cam_stepper_b" onclick="move_cam('up')" style="transform:rotate(180deg)">
 					<svg viewbox="0 0 50 50">
 						<circle cx="25" cy="25" r="25" fill="#354a5f"/>
 						<path d="M10 40 l15 -30 l15 30 Z" style="fill:#000000;" />
@@ -813,3 +813,4 @@ body{
 </div>
 </body>
 </html>
+
