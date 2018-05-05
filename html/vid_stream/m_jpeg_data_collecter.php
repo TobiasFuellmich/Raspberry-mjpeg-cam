@@ -1,9 +1,7 @@
 <?php
-/*
-if($_POST['pw']!==""){
+if($_POST['pw']!=='$2y$11$mqy8oNP5VxijYR5OBTj4O.hZxVqTojjct/q.1FjyynTthYQxO.Jni'){
 	exit;
 }
-*/
 $lines=shell_exec('ps -ef | grep -c "/var/www/html/vid_stream/camera.py.lock"');
 if($_POST['com']==='start'){
 	if (substr($lines,0,1)==2){
